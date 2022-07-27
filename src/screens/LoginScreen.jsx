@@ -1,8 +1,24 @@
 import React from 'react'
 
+import { Formik } from 'formik'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+
+import AuthInput from '../components/ui/AuthInput'
+import { schemaLogin } from '../utils/schemas'
+import { __authLogin } from '../actions/authActions'
+
+import Logo from '../assets/logo.jpg'
 
 export default function LoginScreen() {
+
+    const { loading } = useSelector(state => state.ui)
+    const dispatch = useDispatch()
+
+    const handleOnSubmit = (values, { setSubmitting, resetForm }) => {
+        dispatch( __authLogin(values, resetForm) )
+    }
+
   return (
     <div className="container">
 
@@ -23,25 +39,65 @@ export default function LoginScreen() {
                             <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
                             <div className="col-lg-6 d-flex align-items-center">
                                 <div className="p-5 w-100">
+                                    <div
+                                        className="col-12 d-flex justify-content-center mb-2"
+                                    >
+                                        <img
+                                            src={Logo}
+                                            style={{
+                                                width: '9rem',
+                                                height: '7rem',
+                                                objectFit: 'contain',
+                                            }}
+                                        />
+                                    </div>
                                     <div className="text-center">
                                         <h1 className="h4 text-gray-900 mb-4">
-                                            Bienvenido!!!
+                                            Micro Aprendizaje
                                         </h1>
                                     </div>
-                                    <form className="user">
-                                        <div className="form-group">
-                                            <input type="email" className="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Ingresa tu correo electronico..."/>
-                                        </div>
-                                        <div className="form-group">
-                                            <input type="password" className="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Contrasena"/>
-                                        </div>
-                                        <a href="index.html" className="btn btn-primary btn-user btn-block">
-                                            Ingresar
-                                        </a>
-                                    </form>
+                                    <Formik
+                                        initialValues={{
+                                            email: '',
+                                            password: '',
+                                            role: 0 
+                                        }}
+                                        onSubmit={handleOnSubmit}
+                                        validationSchema={ schemaLogin }
+                                    >
+                                        {
+                                            ({
+                                                handleSubmit,
+                                            }) => (
+                                                <form 
+                                                    className="user"
+                                                    onSubmit={handleSubmit}
+                                                >
+                                                    <AuthInput
+                                                        name="email"
+                                                        type="email"
+                                                        placeholder="Ingresa tu correo electronico..."
+                                                        disabled={ loading }
+                                                    />
+                                                    <AuthInput
+                                                        name="password"
+                                                        type="password"
+                                                        placeholder="Contraseña"
+                                                        disabled={ loading }
+                                                    />
+                                                    <button 
+                                                        disabled={ loading }
+                                                        role='submit'
+                                                        className="btn btn-primary bg-color border-0 btn-user btn-block"
+                                                        
+                                                    >
+                                                        Ingresar
+                                                    </button>
+                                                </form>
+                                            )
+                                        }
+                                    </Formik>
+                                    
                                     <hr/>
                                     <div className="text-center">
                                         <Link

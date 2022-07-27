@@ -1,8 +1,22 @@
 import React from 'react'
 
 import { Link } from 'react-router-dom'
+import { Formik } from 'formik'
+import { useDispatch,useSelector } from 'react-redux'
+
+import AuthInput from '../components/ui/AuthInput'
+import { schemaRegister } from '../utils/schemas'
+import { __authRegister } from '../actions/authActions'
 
 export default function RegisterScreen() {
+
+    const { loading } = useSelector(state => state.ui)
+    const dispatch = useDispatch()
+
+    const handleOnSubmit = (values, { setSubmitting, resetForm }) => {
+        dispatch( __authRegister(values, resetForm) )
+    }
+
   return (
     <div className="container">
         <div className="card o-hidden border-0 shadow-lg my-5">
@@ -21,29 +35,61 @@ export default function RegisterScreen() {
                                     Crear Cuenta
                                 </h1>
                             </div>
-                            <form className="user">
-                                <div className="form-group">
-                                    <input type="text" className="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="Nombre completo"/>
-                                </div>
-                                <div className="form-group">
-                                    <input type="email" className="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="Correo electronico"/>
-                                </div>
-                                <div className="form-group row">
-                                    <div className="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" className="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Contrasena"/>
-                                    </div>
-                                    <div className="col-sm-6">
-                                        <input type="password" className="form-control form-control-user"
-                                            id="exampleRepeatPassword" placeholder="Repetir contrasena"/>
-                                    </div>
-                                </div>
-                                <a href="login.html" className="btn btn-primary btn-user btn-block">
-                                    Crear Cuenta
-                                </a>
-                            </form>
+                            <Formik
+                                initialValues={{
+                                    name: '',
+                                    email: '',
+                                    password: '',
+                                    confirmPassword: '',
+                                    role: 0 
+                                }}
+                                validationSchema={ schemaRegister }
+                                onSubmit={handleOnSubmit}
+                            >
+                                {
+                                    ({
+                                        handleSubmit,
+                                    }) => (
+                                        <form 
+                                            className="user"
+                                            onSubmit={handleSubmit}    
+                                        >
+                                            <AuthInput
+                                                name="name"
+                                                placeholder="Nombre completo"
+                                                type='text'
+                                                disabled={loading}
+                                            />
+                                            <AuthInput
+                                                name="email"
+                                                placeholder="Correo electrónico"
+                                                type='email'
+                                                disabled={loading}
+                                            />
+                                            <AuthInput
+                                                name="password"
+                                                placeholder="Contraseña"
+                                                type='password'
+                                                disabled={loading}
+                                            />
+                                            <AuthInput
+                                                name="confirmPassword"
+                                                placeholder="Confirmar contraseña"
+                                                type='password'
+                                                disabled={loading}
+                                            />
+                                            
+                                            <button 
+                                                className="btn btn-primary btn-user btn-block bg-color border-0"
+                                                role='submit'
+                                                disabled={ loading }
+                                            >
+                                                Crear Cuenta
+                                            </button>
+                                        </form>
+                                    )
+                                }
+                            </Formik>
                             <hr/>
                             <div className="text-center">
                                 <Link

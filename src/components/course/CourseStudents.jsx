@@ -1,28 +1,62 @@
 import React from 'react'
 
-export default function CourseStudents() {
+export default function CourseStudents({
+    students,
+    col1='nomber',
+    col2='Correo electrónico',
+    col3='Codigo',
+}) {
+
   return (
-    <div class="table-responsive">
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <div className="table-responsive">
+        <table className="table table-bordered" id="dataTable" width="100%" >
             <thead>
                 <tr>
                     <th>
-                        Nombre
+                        {
+                            col1
+                        }
                     </th>
                     <th>
-                        Correo electronico
+                        {
+                            col2
+                        }
                     </th>
                     <th>
-                        Codigo
+                        {
+                            col3
+                        }
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>jeansyo@gmail.com</td>
-                    <td>CODUSR-123</td>
-                </tr>
+                {
+                    students.map(({
+                        name,
+                        email,
+                        code
+                    }) => (
+                        <tr
+                            key={ code }
+                        >
+                            <td>
+                                {
+                                    name
+                                }
+                            </td>
+                            <td>
+                                {
+                                    email
+                                }
+                            </td>
+                            <td>
+                                {
+                                    code
+                                }
+                            </td>
+                        </tr>
+                    ))
+                }
             </tbody>
         </table>
     </div>

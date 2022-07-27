@@ -1,30 +1,40 @@
 import React from 'react'
 
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { __authLogout } from '../../actions/authActions'
 
 export default function NavBar({
     children
 }) {
+
+    const dispatch = useDispatch()
+    const { user: { name } } = useSelector(state => state.auth)
+
+    const handleOnLogout = () => {
+        dispatch( __authLogout() )
+    }
+
+
   return (
     <div id="wrapper">
-        <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul className="navbar-nav bg-color sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <a className="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <div className="sidebar-brand-icon rotate-n-15">
-                    <i className="fas fa-laugh-wink"></i>
+                <div className="sidebar-brand-icon  d-md-none">
+                    MICAP
                 </div>
-                <div className="sidebar-brand-text mx-3">School Admin <sup>R</sup></div>
+                <div className="sidebar-brand-text mx-3">Micro Aprendizaje</div>
             </a>
 
-            <hr className="sidebar-divider my-0"/>
+            <hr className="sidebar-divider my-0 bg-white"/>
 
             <li className="nav-item active">
                 <Link
                     className='nav-link'
                     to='/'
                 >
-                    <i className="fas fa-fw fa-tachometer-alt"></i>
                     <span>Panel de control</span>
                 </Link>
             </li>
@@ -45,16 +55,30 @@ export default function NavBar({
                         <li className="nav-item dropdown no-arrow">
                             <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <span className="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img className="img-profile rounded-circle"
-                                    src="https://picsum.photos/200"/>
+                                <span className="text-capitalize mr-2 d-none d-lg-inline text-gray-600 small">
+                                    {
+                                        name
+                                    }
+                                </span>
+                                <div
+                                    className="bg-color text-uppercase img-profile rounded-circle text-white d-flex align-items-center justify-content-center"
+                                >
+                                    {
+                                        name.charAt(0)
+                                    }
+                                </div>
                             </a>
-                            <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            <div className="dropdown-menu dropdown-menu-left dropdown-menu-start shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a className="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <div 
+                                    className="dropdown-item" 
+                                    data-toggle="modal" 
+                                    data-target="#logoutModal"
+                                    onClick={handleOnLogout}
+                                >
                                     <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Cerrar sesion
-                                </a>
+                                </div>
                             </div>
                         </li>
 
@@ -69,7 +93,7 @@ export default function NavBar({
             <footer className="sticky-footer bg-white">
                 <div className="container my-auto">
                     <div className="copyright text-center my-auto">
-                        <span>Copyright &copy; Made for Jeansyo</span>
+                        <span>Copyright &copy;</span>
                     </div>
                 </div>
             </footer>

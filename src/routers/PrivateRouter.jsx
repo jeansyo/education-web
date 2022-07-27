@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import { Route, Routes, Navigate } from 'react-router-dom'
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom'
 
 import NavBar from '../components/ui/NavBar'
 import CourseScreen from '../screens/CourseScreen'
 import HomeScreen from '../screens/HomeScreen'
 
 export default function PrivateRouter() {
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+
+    navigate('/')
+
+  }, [])
+  
+
   return (
     <NavBar>
         <Routes>
